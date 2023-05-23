@@ -12,35 +12,40 @@ public class EnemyAnimation : StateMachineBehaviour
     public float point;
     SpriteRenderer sr;
     Transform bat;
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         rb = animator.GetComponent<Rigidbody2D>();
         sr = animator.GetComponent<SpriteRenderer>();
-        bat = GameObject.FindGameObjectWithTag("Bat").GetComponent<CircleCollider2D>().transform;
 
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        bat = GameObject.FindGameObjectWithTag("Bat").GetComponent<CircleCollider2D>().transform;
 
-        if (Vector2.Distance(new Vector2(player.position.x, player.position.y), new Vector2(bat.position.x, bat.position.y)) <= attackRange)
+        if (bat != null)
         {
-            animator.SetTrigger("Attack");
+            if (Vector2.Distance(new Vector2(player.position.x, player.position.y), new Vector2(animator.gameObject.transform.position.x, animator.gameObject.transform.position.y)) <= attackRange)///логика с атакой врага
+            {
+                animator.SetTrigger("Attack");
+            }
         }
+        
 
 
         ///СЛОЖНАЯ ЛОГИКА С ПЕРЕВОРОТОМ МОДЕЛИ ПО КООРДИНАТАМ
         
-        if (animator.transform.position.x > point)
+        if (animator.transform.position.x > point + 1)
         {
             sr.flipX = false;
             point = animator.transform.position.x;
 
         }
-        else if (animator.transform.position.x < point - 0.3)
+        else if (animator.transform.position.x < point - 1)
         {
             sr.flipX = true;
             point = animator.transform.position.x;

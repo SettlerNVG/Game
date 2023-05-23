@@ -8,6 +8,7 @@ public class EnemyDamage : MonoBehaviour
 {
     [SerializeField] private int damage;
     [SerializeField] HealthController healthController;
+    bool godMode = false;
     bool atack = false;
     Animator animator;
     public void Awake()
@@ -20,10 +21,19 @@ public class EnemyDamage : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.CompareTag("Player"))
+        if (coll.CompareTag("Player")&&godMode==false)
         {
             DoDamage();
+            godMode = true;
+            Invoke("OffGodMode", 0.5f); /// ПОЛУЧЕНИЕ УРОНА НЕ ПОСТОЯННОЕ А КАЖДУЮ СЕКУНДУ
+            ////
+
+            
         }
+    }
+    void OffGodMode()
+    {
+        godMode = false;
     }
 
     void Update()

@@ -9,9 +9,11 @@ public class fireballScript : MonoBehaviour
     [SerializeField] private float fireballSpeed;
     [SerializeField] private GameObject fireEffect;
     private Rigidbody2D rigidbody;
+    BoxCollider2D skeleton;
     // Start is called before the first frame update
     void Start()
     {
+        skeleton = GetComponent<BoxCollider2D>();
         rigidbody = GetComponent<Rigidbody2D>();
         //Hp = GetComponent<EnemyHp>();
         rigidbody.velocity = transform.right * fireballSpeed;
@@ -28,13 +30,20 @@ public class fireballScript : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        
         var enemy = collision.GetComponent<EnemyDamage>();
         if (enemy != null)
         {
             Instantiate(fireEffect, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
-        if (collision.CompareTag("Bat")|| collision.CompareTag("Enemy"))
+        var ground = collision.GetComponent<BoxCollider2D>();
+        if(ground != null)
+        {
+            Instantiate(fireEffect, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+        }
+        if (collision.CompareTag("Bat"))
         {
             EnemyHp Hp = collision.GetComponent<EnemyHp>();//обращение на объект класса Хп Врага
             if(Hp.enemyHp != 0)
@@ -47,15 +56,21 @@ public class fireballScript : MonoBehaviour
                 Destroy(GameObject.Find("batGRFX").GetComponent<CircleCollider2D>());//удаление коллайдера врага, что бы не била несколько раз
             }
         }
+        if (collision.CompareTag("Skeleton"))
+        {
+            EnemyHp Hp = collision.GetComponent<EnemyHp>();//обращение на объект класса Хп Врага
+            if (Hp.enemyHp != 0)
+            {
+                Hp.enemyHp -= 1;
+            }
+            if (Hp.enemyHp == 0)
+            {
+
+                Destroy(GameObject.Find("Skeleton").GetComponent<CircleCollider2D>());//удаление коллайдера врага, что бы не била несколько раз
+            }
+        }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            Instantiate(fireEffect, transform.position, Quaternion.identity);
-            Destroy(this.gameObject);
-        }
-        
-    }
+
+    
 }

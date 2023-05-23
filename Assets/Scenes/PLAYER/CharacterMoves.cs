@@ -38,7 +38,6 @@ public class CharacterMoves : MonoBehaviour
     private Rigidbody2D rigidbody2D;
     private SpriteRenderer spriteRenderer;
     private Vector3 dir;
-
     float jump = 0;//переменные для анимации
     float horizontalMove = 0f;//переменные для анимации
 //    bool keysActive = false;//переменная для проверки зажатых клавиш
@@ -49,6 +48,8 @@ public class CharacterMoves : MonoBehaviour
     private Vector3 spawnPoint;// спавн
     public GameObject fallDetector;//площадка выпада за мир
     public ManabarScript manabar;//slider с маной
+    public int value;
+
     private void Flip()//метод для поворота
     {
         facing = !facing;
@@ -63,11 +64,10 @@ public class CharacterMoves : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         animator = gameObject.GetComponent<Animator>();
         spawnPoint = transform.position;
-
         //скрипт для маны
         currentMana = maxMana;
         manabar.SetMaxMana(maxMana);
-
+        value = healthController.PlayerHealth;
 
 
     }
@@ -132,7 +132,7 @@ public class CharacterMoves : MonoBehaviour
     public void FixedUpdate()
     {
         CheckGround();
-
+        Hurts();
 
     }
     void OnTriggerEnter2D(Collider2D collision)//смерть fallDetector
@@ -167,7 +167,15 @@ public class CharacterMoves : MonoBehaviour
         }
         
     }
+    public void Hurts()
+    {
+        if (healthController.PlayerHealth < value)
+        {
+            animator.SetBool("Hurts", true);
+        }
+        value = healthController.PlayerHealth;
 
+    }
     public void Update()
     {
         /*
@@ -179,11 +187,16 @@ public class CharacterMoves : MonoBehaviour
             }
         }
         */
+        //АНИМАЦИЯ ДЛЯ ПОЛУЧЕНИЯ УРОНА ПЕРСОНАЖЕМ
+
+
+
 
         if (healthController.PlayerHealth <= 0)//счет жизней//смерть
         {
             canMove = false;
             animator.SetFloat("Die", 1);
+            Destroy(GameObject.Find("Player").GetComponent<CircleCollider2D>());//удаление коллайдера при смерти
             StartCoroutine(WaitDeath());
         }
 

@@ -9,11 +9,15 @@ TagManager:
   - Heal
   - Fire
   - Bat
+  - Saw
+  - Ground
+  - Skeleton
+  - Fireball
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
   - Ground
@@ -48,4 +52,7 @@ TagManager:
     locked: 0
   - name: Menu
     uniqueID: 631675659
+    locked: 0
+  - name: Castle
+    uniqueID: 2625283131
     locked: 0

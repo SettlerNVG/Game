@@ -7,16 +7,15 @@ public class HealthController : MonoBehaviour
     public  int PlayerHealth;
     private Vector3 spawnPoint;
     [SerializeField] public Image[] hearts;
-    Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
         UpdateHealth();
-        animator = gameObject.GetComponent<Animator>();
     }
     private void Update()
     {
-        
+                
     }
     // Update is called once per frame
     public void UpdateHealth()
