@@ -14,6 +14,8 @@ public class CharacterMoves : MonoBehaviour
     [SerializeField] private bool facing = true;//переменная для остлеживания поворота игрока
     [SerializeField] private int maxMana = 2;
     [SerializeField] private int currentMana;
+    [SerializeField] public int collectedKeys = 0;
+
 
 
     [Space]
